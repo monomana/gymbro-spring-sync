@@ -14,22 +14,50 @@ import java.util.List;
 @RequestMapping(value = "trainers")
 public class TrainerResource {
 
-    private TrainerService trainerService;
+    private final TrainerService service;
 
-    public TrainerResource(TrainerService trainerService){
-        this.trainerService = trainerService;
+    public TrainerResource(TrainerService service){
+        this.service = service;
     }
 
-    @GetMapping()
-    public List<Trainer> getTrainers(){
-        return trainerService.getTrainers();
+    @GetMapping
+    public List<Trainer> getAllTrainers() {
+        return service.findAll();
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/post")
-    public void saveTrainer(@RequestBody Trainer trainer){
+    @GetMapping("/{id}")
+    public ResponseEntity<Trainer> getTrainerById(@PathVariable Integer id) {
+        return service.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
-        trainerService.saveTrainer(trainer);
-        // return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(1).toUri()).build();
+    @PostMapping
+    public Trainer createTrainer(@RequestBody Trainer trainer) {
+        return service.save(trainer);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Trainer> updateTrainer(@PathVariable Integer id, @RequestBody Trainer trainerDetails) {
+        return service.findById(id)
+                .map(existingTrainer -> {
+                    existingTrainer.setFirstName(trainerDetails.getFirstName());
+                    existingTrainer.setLastName(trainerDetails.getLastName());
+                    existingTrainer.setSpecialization(trainerDetails.getSpecialization());
+                    existingTrainer.setPhone(trainerDetails.getPhone());
+                    existingTrainer.setEmail(trainerDetails.getEmail());
+                    return ResponseEntity.ok(service.save(existingTrainer));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTrainer(@PathVariable Integer id) {
+        if (service.findById(id).isPresent()) {
+            service.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

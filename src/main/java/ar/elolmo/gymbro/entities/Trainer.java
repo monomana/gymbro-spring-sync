@@ -10,7 +10,7 @@ public class Trainer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer trainerId;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String phone;
@@ -20,12 +20,12 @@ public class Trainer {
     public Trainer() {
     }
 
-    public Integer getTrainerId() {
-        return trainerId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setTrainerId(Integer trainerId) {
-        this.trainerId = trainerId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFirstName() {
