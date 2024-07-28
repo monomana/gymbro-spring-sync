@@ -1,40 +1,61 @@
-package ar.elolmo.gymbro.entities;
+package ar.elolmo.gymbro.resources.dtos;
 
+import ar.elolmo.gymbro.entities.Member;
+import ar.elolmo.gymbro.entities.MembershipType;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-
 
 import java.time.LocalDateTime;
 import java.util.Date;
 
-@Entity
-@Table(name = "member")
-public class Member {
+public class MemberOutDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String firstName;
     private String lastName;
-
-//@Temporal(TemporalType.DATE)
-@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dateBirth;
     private String gender;
     private String phone;
     private String email;
     private String address;
-//@Temporal(TemporalType.TIMESTAMP)
-@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime joinDate;
-
-    @ManyToOne
-    @JoinColumn(name = "membership_type_id")
     private MembershipType membershipType;
 
-         // Getters and setters
+    public static MemberOutDTO convertToDTO(Member member) {
+        MemberOutDTO dto = new MemberOutDTO();
+        dto.setId(member.getId());
+        dto.setFirstName(member.getFirstName());
+        dto.setLastName(member.getLastName());
+        dto.setDateBirth(member.getDateBirth());
+        dto.setGender(member.getGender());
+        dto.setPhone(member.getPhone());
+        dto.setEmail(member.getEmail());
+        dto.setAddress(member.getAddress());
+        dto.setJoinDate(member.getJoinDate());
+        dto.setMembershipType(member.getMembershipType());
+        return dto;
+    }
+
+    // TODO: Delete if dont use
+    private static Member convertToEntity(MemberOutDTO dto) {
+        Member member = new Member();
+        member.setId(dto.getId());
+        member.setFirstName(dto.getFirstName());
+        member.setLastName(dto.getLastName());
+        member.setDateBirth(dto.getDateBirth());
+        member.setGender(dto.getGender());
+        member.setPhone(dto.getPhone());
+        member.setEmail(dto.getEmail());
+        member.setAddress(dto.getAddress());
+        member.setJoinDate(dto.getJoinDate());
+        // Assume MembershipType is retrieved separately
+        return member;
+    }
+
+
+    // Getters and setters
+
 
     public Integer getId() {
         return id;
@@ -64,8 +85,8 @@ public class Member {
         return dateBirth;
     }
 
-    public void setDateBirth(Date dateBirth) {
-        this.dateBirth = dateBirth;
+    public void setDateBirth(Date dateOfBirth) {
+        this.dateBirth = dateOfBirth;
     }
 
     public String getGender() {
@@ -116,3 +137,4 @@ public class Member {
         this.membershipType = membershipType;
     }
 }
+
