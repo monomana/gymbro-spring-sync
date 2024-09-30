@@ -29,7 +29,10 @@ public class Member {
 //@Temporal(TemporalType.TIMESTAMP)
 @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime joinDate;
-
+    private String photo;
+    private boolean active;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updated;
     @ManyToOne
     @JoinColumn(name = "membership_type_id")
     private MembershipType membershipType;
@@ -115,4 +118,28 @@ public class Member {
     public void setMembershipType(MembershipType membershipType) {
         this.membershipType = membershipType;
     }
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public LocalDateTime getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(LocalDateTime updated) {
+        this.updated = updated;
+    }
+
 }

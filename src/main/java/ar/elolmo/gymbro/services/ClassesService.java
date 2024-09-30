@@ -1,9 +1,7 @@
 package ar.elolmo.gymbro.services;
 
-import ar.elolmo.gymbro.entities.Classes;
-import ar.elolmo.gymbro.entities.Trainer;
+import ar.elolmo.gymbro.entities.ClassEntity;
 import ar.elolmo.gymbro.repository.ClassesRepository;
-import ar.elolmo.gymbro.repository.TrainerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,17 +16,26 @@ public class ClassesService {
         this.repository = repository;
     }
 
-    public List<Classes> findAll() {
+    public List<ClassEntity> findAll() {
         return repository.findAll();
     }
 
-    public Optional<Classes> findById(Integer id) {
+    public Optional<ClassEntity> findById(Integer id) {
         return repository.findById(id);
     }
 
-    public Classes save(Classes classes) {
-        return repository.save(classes);
+    public ClassEntity save(ClassEntity classEntity) {
+        return repository.save(classEntity);
     }
+
+//    public ClassEntity update(Integer id,ClassInDTO classInDTO) {
+//        this.findById(id)
+//                .map(ClassInDTO::convertToDTO)
+//
+//                .map(ClassInDTO::convertToEntity)
+//        return repository.save(classes);
+//    }
+
 
     public void deleteById(Integer id) {
         repository.deleteById(id);

@@ -1,10 +1,15 @@
 package ar.elolmo.gymbro.resources;
 
 
-    import ar.elolmo.gymbro.entities.Classes;
+    import ar.elolmo.gymbro.entities.ClassEntity;
+    import ar.elolmo.gymbro.entities.Trainer;
+    import ar.elolmo.gymbro.resources.dtos.ClassInDTO;
+    import ar.elolmo.gymbro.resources.dtos.ClassOutDTO;
     import ar.elolmo.gymbro.services.ClassesService;
+    import jakarta.validation.Valid;
     import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+    import org.springframework.http.HttpStatus;
+    import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,29 +22,38 @@ import java.util.List;
         private ClassesService service;
 
         @GetMapping
-        public List<Classes> getAllClasses() {
-            return service.findAll();
+        public List<ClassOutDTO> getAllClasses() {
+            return service.findAll().stream().map(ClassOutDTO::convertToDTO).toList();
         }
 
         @GetMapping("/{id}")
-        public ResponseEntity<Classes> getClassById(@PathVariable Integer id) {
+        public ResponseEntity<ClassEntity> getClassById(@PathVariable Integer id) {
             return service.findById(id)
                     .map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
         }
 
         @PostMapping
-        public Classes createClass(@RequestBody Classes classes) {
-            return service.save(classes);
+        public ClassEntity createClass(@RequestBody @Valid ClassInDTO classes) {
+            return service.save(classes.convertToEntity());
         }
 
+        @ResponseStatus(HttpStatus.OK)
         @PutMapping("/{id}")
-        public ResponseEntity<Classes> updateClass(@PathVariable Integer id, @RequestBody Classes classDetails) {
-            return service.findById(id)
+        public ResponseEntity<ClassEntity> updateClass(@PathVariable Integer id,
+                                                       @RequestBody @Valid ClassInDTO classDetails) {
+            return  service.findById(id)
+//                    .map(ClassInDTO::convertToDTO)
+//                    .map(ClassInDTO::convertToEntity)
+//                    .map(service::save).get()) ;
+
                     .map(existingClass -> {
                         existingClass.setName(classDetails.getName());
                         existingClass.setDescription(classDetails.getDescription());
-                        existingClass.setTrainer(classDetails.getTrainer());
+                        Trainer trainer = new Trainer();
+                        trainer.setId(classDetails.getTrainerId());
+                        existingClass.setTrainer(trainer);
+
                         return ResponseEntity.ok(service.save(existingClass));
                     })
                     .orElse(ResponseEntity.notFound().build());

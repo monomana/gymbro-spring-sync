@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name="class")
-public class Classes {
+public class ClassEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String description;
+
 
     @ManyToOne
     @JoinColumn(name = "trainer_id")

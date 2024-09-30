@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+@CrossOrigin(origins="http://localhost:4200")
 @RestController
-@RequestMapping(value = "membership-types")
+@RequestMapping(value = "api/membership-types")
 public class MembershipTypeResource {
 
     private final MembershipTypeService membershipTypeService;

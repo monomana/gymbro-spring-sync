@@ -16,3 +16,9 @@ curl -i -X POST -H "Content-Type: application/json" -d '{"name":"test","duration
 
     https://www.baeldung.com/spring-data-jpa-query-by-date
 
+**** web flux
+
+	https://www.youtube.com/watch?v=M3jNn3HMeWg
+
+**** Real time example
+	https://www.youtube.com/watch?v=mU-7fKOCZVc

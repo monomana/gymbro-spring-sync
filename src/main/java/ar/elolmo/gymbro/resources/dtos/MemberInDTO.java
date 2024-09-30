@@ -3,6 +3,8 @@ package ar.elolmo.gymbro.resources.dtos;
 import ar.elolmo.gymbro.entities.Member;
 import ar.elolmo.gymbro.entities.MembershipType;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
@@ -10,7 +12,9 @@ import java.util.Date;
 
 public class MemberInDTO {
 
-    private Integer id;
+//    private Integer id;
+    @NotNull
+    @NotBlank
     private String firstName;
     private String lastName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -21,11 +25,18 @@ public class MemberInDTO {
     private String address;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime joinDate;
+    @NotNull(message = "No debe ser nulo")
     private Integer membershipTypeId;
+    private String photo;
+    private boolean active;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updated;
+
+
 
     public static MemberInDTO convertToDTO(Member member) {
         MemberInDTO dto = new MemberInDTO();
-        dto.setId(member.getId());
+//        dto.setId(member.getId());
         dto.setFirstName(member.getFirstName());
         dto.setLastName(member.getLastName());
         dto.setDateBirth(member.getDateBirth());
@@ -38,18 +49,10 @@ public class MemberInDTO {
         return dto;
     }
 
-    public Member convertToEntity() {
-        Member member = new Member();
+    public Member convertToEntity(Member member) {
+//        Member member = new Member();
         BeanUtils.copyProperties(this,member);
-//        member.setId(dto.getId());
-//        member.setFirstName(dto.getFirstName());
-//        member.setLastName(dto.getLastName());
-//        member.setDateBirth(dto.getDateBirth());
-//        member.setGender(dto.getGender());
-//        member.setPhone(dto.getPhone());
-//        member.setEmail(dto.getEmail());
-//        member.setAddress(dto.getAddress());
-//        member.setJoinDate(dto.getJoinDate());
+
 
         // Assume MembershipType is retrieved separately
         MembershipType membershipType = new MembershipType();
@@ -62,13 +65,13 @@ public class MemberInDTO {
     // Getters and setters
 
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+//    public Integer getId() {
+//        return id;
+//    }
+//
+//    public void setId(Integer id) {
+//        this.id = id;
+//    }
 
     public String getFirstName() {
         return firstName;
@@ -140,6 +143,29 @@ public class MemberInDTO {
 
     public void setMembershipTypeId(Integer membershipTypeId) {
         this.membershipTypeId = membershipTypeId;
+    }
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public LocalDateTime getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(LocalDateTime updated) {
+        this.updated = updated;
     }
 }
 

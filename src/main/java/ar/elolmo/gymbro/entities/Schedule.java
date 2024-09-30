@@ -15,7 +15,7 @@ public class Schedule {
 
     @ManyToOne
     @JoinColumn(name = "class_id")
-    private Classes classes;
+    private ClassEntity classEntity;
 
     @ManyToOne
     @JoinColumn(name = "trainer_id")
@@ -36,12 +36,12 @@ public class Schedule {
         this.id = id;
     }
 
-    public Classes getClasses() {
-        return classes;
+    public ClassEntity getClasses() {
+        return classEntity;
     }
 
-    public void setClasses(Classes classes) {
-        this.classes = classes;
+    public void setClasses(ClassEntity classEntity) {
+        this.classEntity = classEntity;
     }
 
     public Trainer getTrainer() {
